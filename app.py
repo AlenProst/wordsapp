@@ -6,16 +6,22 @@ from models import db, MyPrepositionCaseTable, db2, TenseTest
 from filldb import fill_db
 import random
 from sqlalchemy import func
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.cfg')
+
 
 app = Flask (__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
-database = 'mydb'
-username = "user1"
-password = "1"
-server = "192.168.1.39"
+database = config.get('MYSQL','database')
+username = config.get('MYSQL','username')
+password = config.get('MYSQL','password')
+server = config.get('MYSQL','server')
+port = config.get('MYSQL','port')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user1:1@192.168.1.42:3306/mydb'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{username}:{password}@{server}:{port}/{database}'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
